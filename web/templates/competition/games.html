@@ -1,0 +1,43 @@
+{% extends '../base.html' %}
+{% block title %}考试列表{% endblock %}
+{% block content %}
+<div class="main-content container">
+    <div class="position toInWhere">
+        <b>当前位置：</b><span>
+        <a onclick="history.back(-1)">考试列表</a>
+        </span>&nbsp;&gt;&nbsp;<span>考试详情</span>
+    </div>
+    <div class="inner-content">
+        <div class="xxzxBox">
+            <div class="tab-content bd">
+                <div role="tabpanel" class="active tab-pane">
+                    <ul class="ul_zxlist" id="column_ul">
+                        {% if not game_datas %}
+                            <div style="text-align:center">
+                                <img src="/static/images/no-bs.png">
+                            </div>
+                        {% else %}
+                            {% for kind in game_datas %}
+                            <li style="border: 1px solid #ccc;border-radius: 10px;margin:10px;">
+                                <a href="{% url 'set:test_info' kind.id %}?uid={{ request.session.uid }}&kind_id={{kind.kind_id}}">
+                                    <span class="start_time"><b>{{ kind.create_time|date:"Y-m" }}</b><i>{{ kind.create_time|date:"d" }}</i></span>
+                                    <h1 title="{{ kind.game_name }}">
+                                         {{ kind.game_name }}
+                                    </h1>
+                                    <p>所属类型：{{ kind.class_game.class_name }}</p>
+                                    <p style="padding:5px 0">结束时间：{{ kind.end_time|date:"Y-m-d" }}</p>
+                                    <div class="badge" style="float:right;margin-top: -40px;">
+                                        <small style="color:yellow;">热度:</small>
+                                        <small style="color:yellow">&nbsp;火爆</small>
+                                    </div>
+                                </a>
+                            </li>
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

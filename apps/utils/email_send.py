@@ -3,7 +3,7 @@ from random import Random
 from django.core.mail import send_mail
 
 from Exam.settings import EMAIL_FROM
-from account.models import EmailVerifyRecord
+from apps.account.models import EmailVerifyRecord
 
 
 # 生成随机字符串

@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}配置考试{% endblock %}
+{% block content %}
+<style>
+    .save-button {
+        margin-top: 25px;
+        width: 239px;
+        line-height: 60px;
+        text-align: center;
+        background: #d9534f;
+        color: #ffffff;
+        font-size: 24px;
+        border-radius: 3px;
+        border: 0;
+        margin-left: -150px;
+        display: inline-block;
+        cursor: pointer;
+    }
+    .xl{
+        position: absolute;
+        top: 5px;
+        left: 250px;
+        width: 500px;
+        height: 450px;
+        border: 1px solid #eef3f3;
+        margin: 0 auto;
+        background: rgb(248, 255, 255);
+        border-radius: 10px;
+        z-index: 1000;
+    }
+    .p{
+        font-size: 25px;
+        text-align: center;
+    }
+    .li{
+        border-bottom: 1px solid #eeeeee;
+        padding: 10px;
+    }
+    .span{
+        margin-left: 20px;
+        color: #1b1b1b;
+    }
+    .span1{
+        float: right;
+        margin-right: 200px;
+        color: #1b1b1b;
+    }
+</style>
+<div class="main-content container" style="background: url(/static/images/form-bg.jpg) no-repeat center top;" id="bj1">
+    <div class="inner-content" style="padding-top:50px;color: white;">
+        <div class="union-title-black" style="color:white">配置考试</div>
+        <div class="col-md-2" style="margin-left: 60px">
+
+        <div class="row">
+            <h3>选择题库</h3>
+            <label for="bankType">题库类型</label>
+            <div class="dropdown" style="width: 200px">
+                <div style="background: rgba(234,223,201,0.45);width: 250px;padding: 10px;border-radius: 10px" class="dropdown-toggle">
+                    {% for c in class_datas %}
+                        <a href="{% url 'set:set_test' %}?type={{ c.class_name }}" style="margin: 5px;{% ifequal type_date c.class_name %} background: #9acf6f {% endifequal %}" class="btn btn-info" >{{ c.class_name }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 14px">
+            <label>选择题库</label>
+            <div>
+                <button class="xlsx1 btn btn-info dropdown-toggle">{% if bank %}{{ bank_info.bank_xlsx }}{% else %}选择题库{% endif %}</button>
+                {% for bank in bank_datas %}
+                    <a href="{% url 'set:set_test' %}?type={{ type_date }}&bank={{ bank.id }}" class="xlsx1 list-group-item btn btn-info" style="background-color: rgb(70, 184, 218);display: none">{{ bank.bank_xlsx }}</a>
+                {% endfor %}
+                {% if bank %}
+                    <button class="xlsx2" style="background:#9acf6f">查看该题库信息</button>
+                    <div class="xlsx2 xl" style="">
+                        <p class="p" style="color: #1b1b1b">题库信息</p>
+                        <ul class="ul">
+                            <li class="li"><span class="span">题库名称:</span><span class="span1">{{ bank_info.bank_xlsx }}</span></li>
+                            <li class="li"><span class="span">题库分类:</span><span class="span1">{{ bank_info.bank_type }}</span></li>
+                            <li class="li"><span class="span">题库总数:</span><span class="span1">{{ bank_info.bank_nums }}</span></li>
+                            <li class="li"><span class="span">单选题数:</span><span class="span1">{{ bank_info.bank_chio }}</span></li>
+                            <li class="li"><span class="span">多选题输:</span><span class="span1">{{ bank_info.bank_chios }}</span></li>
+                            <li class="li"><span class="span">判断题数:</span><span class="span1">{{ bank_info.bank_judge }}</span></li>
+                            <li class="li"><span class="span">填空提数:</span><span class="span1">{{ bank_info.bank_gap }}</span></li>
+                            <li class="li"><span class="span">参与人数:</span><span class="span1">{{ bank_info.bank_person }}</span></li>
+                            <li class="li"><span class="span">已出考试:</span><span class="span1">{{ bank_info.bank_bs }}</span></li>
+                        </ul>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        </div>
+
+    <form method="post">
+        <div class="col-md-4" style="margin-left: 60px">
+            <h3>配置比赛</h3>
+            <label for="competetionName">比赛名称</label>
+            <input name="name" type="text" class="form-control" placeholder="填写比赛名称" />
+            <label for="questionNum">出题数量</label>
+            <input name="num" type="number" class="form-control" value="10" />
+            <label for="totalScore">总分数</label>
+            <input name="score" type="number" class="form-control" value="100" />
+            <label for="copStartAt">开始时间</label>
+            <input name="starttime" type="datetime-local" class="form-control">
+            <label for="copFinishAt">结束时间</label>
+            <input name="endtime" type="datetime-local" class="form-control">
+            <label for="period">答题时间限制</label>
+            <input name="times" type="text" class="form-control" placeholder="填写答题时常限制单位为分钟(min)" />
+            <p style="color: red;font-size: 20px">{{ con }}</p>
+            <p style="text-align: center">
+                <input type="submit" value="保存到数据库" class="save-button">
+            </p>
+        </div>
+        <div class="col-md-4" style="margin-left: 60px">
+            <h3>配置页面数据(可选)</h3>
+            <label>比赛规则</label>
+            <textarea name="ruleText" class="form-control" placeholder="请输入比赛规则的内容，让答题者快速了解比赛内容"></textarea>
+            <div style="margin-top: 30px">开启录入信息功能</div>
+            <span id="userFormTips" style="margin-left: 5px" class="btn badge">?</span><br>
+            <label for="cxTable" style="margin-top: 30px;">您想要录入的字段</label>
+            <span id="formFieldsTips" style="margin-left: 5px" class="btn badge" title="">?</span>
+            <label for="optionFields" style="margin-top: 10px">作为下拉框的字段</label>
+            <span id="optionFieldsTips" style="margin-left: 5px" class="btn badge" title="">?</span><br />
+            <table id="optionResult" class="table table-hover">
+            </table>
+            <div id="addOptionFields" class="glyphicon glyphicon-plus" style="font-size: 32px;cursor: pointer"></div>
+        </div>
+        {% csrf_token %}
+    </form>
+
+    </div>
+
+    <div id="optionFieldsModal" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-title">
+                    <div class="form-group" id="optionFieldsForm">
+                        <label for="optionFieldName" style="margin-left: 100px;width: 400px;">选择一个字段名</label>
+                        <select id="optionFieldName" class="form-control" style="margin-left: 100px;width: 400px">
+                            {% for f in form_fields %}
+                                <option class="form-control" style="margin-left: 100px;width: 400px;" name="{{ f.field_name }}">{{ f.label }}</option>
+                            {% endfor %}
+                        </select>
+                        <label for="optionFieldValue" style="margin-left: 100px;">输入一个可选值</label>
+                        <input type="text" id="optionFieldValue" class="form-control" style="margin-left: 100px;width: 400px;" placeholder="字段可选值，每一个值用#隔开，如: 吃饭#看电影#逛街">
+                        <input type="submit" id="submitOptionField" class="btn btn-success" value="设置为下拉框" style="margin-left: 100px;margin-top: 20px;width: 400px" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="bankModal" class="modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <button class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-title">
+                    <h2 class="text-center">题库信息</h2>
+                    <div id="bankModalContent">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <script src="{% static 'js/currentTime.js' %}"></script>
+
+    <script>
+    $(function () {
+        $('.xlsx1').on('click',function () {
+            $(this).next().toggle()
+        })
+    })
+    $(function () {
+        $('.xlsx2').on('click',function () {
+            $(this).next().toggle()
+        })
+    })
+    </script>
+
+{% endblock %}
