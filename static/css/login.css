@@ -1,7 +1,7 @@
 body{
     width:100%;
     height:100%;
-    background:#77c562;
+    background:#bcd8e4;
 }
 a:hover{
     text-decoration:underline;
@@ -15,6 +15,8 @@ a:hover{
     background:#fff;
 }
 .bg-box{
+    width: 1903px;
+    height: 899px;
     background:url(../images/login-bg.png) no-repeat center center;
 }
 .header-box{

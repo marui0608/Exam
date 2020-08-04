@@ -25,9 +25,9 @@
                                     {% for r in order %}
                                     <tr>
                                         <td><b style="color:red">{{ forloop.counter }}</b></td>
-                                        <td>{{ r.ginfo_user.nick_name }}</td>
+                                        <td>{{ r.ginfo_user.username }}</td>
                                         <td>{{ r.total }}</td>
-                                        <td>{{ r.times }}</td>
+                                        <td>{{ r.times|truncatechars:7 }}</td>
                                     </tr>
                                     {% endfor %}
                                 </table>
@@ -43,9 +43,9 @@
                                     {% for r in order %}
                                     <tr>
                                         <td><b style="color:red">{{ forloop.counter }}</b></td>
-                                        <td>{{ r.ginfo_user.nick_name }}</td>
+                                        <td>{{ r.ginfo_user.username }}</td>
                                         <td>{{ r.total }}</td>
-                                        <td>{{ r.times }}</td>
+                                        <td>{{ r.times|truncatechars:7 }}</td>
                                         <td>{{ r.ginfo_game.game_name }}</td>
                                     </tr>
                                     {% endfor %}
@@ -55,14 +55,16 @@
                         </div>
                         <div class="col-md-3" style="margin-top: 20px;padding-left: 20px;">
                             <div class="panel panel-success">
-                                <div class="panel-heading panel-danger" style="text-align:center">历史最佳排名</div>
+                                <div class="panel-heading panel-danger" style="text-align:center">您的历史最佳成绩</div>
                                 <div class="panel-body" id="myRank">
                                     <div id="myResult">
-
+                                        <p>{{ good.ginfo_game.game_name }}
+                                            <span style="color: red;font-weight: bold">{{ good.total }}</span>
+                                        </p>
                                     </div>
                                     <div style="padding: 10px 0">
-                                     <a class="btn btn-info" href="/index{% if request.session.uid %}?uid={{ request.session.uid }}{% else %}{% endif %}">回首页</a>
-                                     <a class="btn btn-info" href="/bs{% if request.session.uid %}?uid={{ request.session.uid }}{% else %}{% endif %}&kind_id={{ kind_info.kind_id }}" style="margin-left: 20px;">去答题</a>
+                                     <a class="btn btn-info" href="{% url 'index' %}">回首页</a>
+                                     <a class="btn btn-info" href="{% url 'index' %}" style="margin-left: 20px;">去答题</a>
                                     </div>
                                 </div>
                                 <div class="panel-footer panel-success"></div>
