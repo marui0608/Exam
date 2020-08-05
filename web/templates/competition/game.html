@@ -24,6 +24,14 @@
         list-style: none;
         position:relative;
     }
+    .box .ul .li .p1{
+        width: 500px;
+        text-align: center;
+        margin: 0px auto 30px;
+    }
+    .box .ul .li label{
+        width: 300px;
+    }
     .biankuang{
         width:220px;
         height: 400px;
@@ -93,24 +101,17 @@
                     <ul class='ul'>
                         {% for bank in bank_data %}
                         <li class="li">
-                            <p style="height: 100px">({{ bank.ques_type }})Q：{{ bank.question }}</p>
+                            <p style="height: 100px" class="p1">({{ bank.ques_type }})Q：{{ bank.question }}</p>
                             {% if bank.ques_type == '单选题' %}
-                                <input type="radio" name="{{ forloop.counter }}" value="A" style="margin-left: 250px">A. {{ bank.choiceA }}<br><br>
-                                <input type="radio" name="{{ forloop.counter }}" value="B" style="margin-left: 250px">B. {{ bank.choiceB }}<br>
-                                <br>
-                                <input type="radio" name="{{ forloop.counter }}" value="C" style="margin-left: 250px">C. {{ bank.choiceC }}<br>
-                                <br>
-                                <input type="radio" name="{{ forloop.counter }}" value="D" style="margin-left: 250px">D. {{ bank.choiceD }}<br>
-                                <br>
+                                <input type="radio" name="{{ forloop.counter }}" value="A" style="margin-left: 250px"><label>A. {{ bank.choiceA }}</label><br>
+                                <input type="radio" name="{{ forloop.counter }}" value="B" style="margin-left: 250px"><label>B. {{ bank.choiceB }}</label><br>
+                                <input type="radio" name="{{ forloop.counter }}" value="C" style="margin-left: 250px"><label>C. {{ bank.choiceC }}</label><br>
+                                <input type="radio" name="{{ forloop.counter }}" value="D" style="margin-left: 250px"><label>D. {{ bank.choiceD }}</label><br>
                             {% elif bank.ques_type == '多选题' %}
-                                <input type="checkbox" name="{{ forloop.counter }}" value="A" style="margin-left: 250px">A. {{ bank.choiceA }}<br>
-                                <br>
-                                <input type="checkbox" name="{{ forloop.counter }}" value="B" style="margin-left: 250px">B. {{ bank.choiceB }}<br>
-                                <br>
-                                <input type="checkbox" name="{{ forloop.counter }}" value="C" style="margin-left: 250px">C. {{ bank.choiceC }}<br>
-                                <br>
-                                <input type="checkbox" name="{{ forloop.counter }}" value="D" style="margin-left: 250px">D. {{ bank.choiceD }}<br>
-                                <br>
+                                <input type="checkbox" name="{{ forloop.counter }}" value="A" style="margin-left: 250px"><label>A. {{ bank.choiceA }}</label><br>
+                                <input type="checkbox" name="{{ forloop.counter }}" value="B" style="margin-left: 250px"><label>B. {{ bank.choiceB }}</label><br>
+                                <input type="checkbox" name="{{ forloop.counter }}" value="C" style="margin-left: 250px"><label>C. {{ bank.choiceC }}</label><br>
+                                <input type="checkbox" name="{{ forloop.counter }}" value="D" style="margin-left: 250px"><label>D. {{ bank.choiceD }}</label><br>
                             {% elif bank.ques_type == '判断题' %}
                                 <input type="radio" name="{{ forloop.counter }}" value="对" style="margin-left: 250px">A. 对<br><br>
                                 <input type="radio" name="{{ forloop.counter }}" value="错" style="margin-left: 250px">B. 错<br><br>
@@ -160,7 +161,7 @@
 {% block js %}
 <script src="{% static 'js/jquery.min.js' %}"></script>
 {% endblock %}
-<div id="id"></div>
+
 <script>
     var leng = {{ leng|safe }}
     var ids = document.getElementById("id");
@@ -169,6 +170,7 @@
     var buttons =document.getElementsByClassName('biankuang')[0];
     var spans=buttons.getElementsByTagName("span");
     var step = 0;
+
      $(".x").on("click",function(){
         step++;
         if(step>slideNum){
@@ -207,16 +209,25 @@
         }
      }
 
-    $("#tjiao").on("click",function(){
-        var a = $("#minute").html();
-        var b = $("#second").html();
-        var c = 59-a;
-        var d = 60-b;
-        $("#id").append("<input type='text' id='ddd' value='"+c+":"+d+"' >");
+{#    $("#tjiao").on("click",function(){#}
+{#        var a = $("#minute").html();#}
+{#        var b = $("#second").html();#}
+{#        var c = 59-a;#}
+{#        var d = 60-b;#}
+{#        $("#id").append("<input type='text' id='ddd' value='"+c+":"+d+"' >");#}
         // alert(m-s);
-    })
+{#    })#}
+{#    var a = $("#minute").html();#}
+{#    var b = $("#second").html();#}
+{#    var c = 0;#}
+    {#if(a==0 && b==0){#}
+        {#$(".btn-danger").click()#}
+        {#console.log('123')#}
+
+
+
     var m = {{times|safe}};
-    var s=59;
+    var s = 59;
     var t1=setInterval(function(){
         s--;
         if(s<0){
@@ -231,6 +242,8 @@
         //当小时、分钟、秒都等于0、则停止倒计时
         if(m==0 && s==0){
              clearInterval(t1);
+             $(".btn-danger").click()
+             console.log('123')
         }
         second.innerText = s<10?"0"+s:s;
         minute.innerText = m<10?"0"+m:m;

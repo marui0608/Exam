@@ -68,7 +68,7 @@
                 <input type='hidden' name='csrfmiddlewaretoken' value='5I2SlleZJOMUX9QbwYLUIAOshdrdpRcy' />
                     {% csrf_token %}
                 </form>
-                <p class="form-p">没有北网帐号？<a href="{% url 'register' %}">立即注册</a></p>
+                <p class="form-p">没有北网帐号？<a class="ui circular red big weibo icon button" href="{% url 'weibo' %}">微博登录</a>&nbsp;&nbsp;<a href="{% url 'register' %}">立即注册</a></p>
             </div>
         </div>
     </div>

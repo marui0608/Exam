@@ -40,8 +40,8 @@
                         </ul>
                     </div>
                     <div class="center-p">
-                         <li id="goBack" class="btn btn-primary" style="margin-top: 36px;"><a href="/">回首页</a></li>
-                         <li id="goRank" class="btn btn-success" style="margin-top: 36px; "><a href="/rank/">查看排行榜</a></li>
+                         <li id="goBack" class="btn btn-primary" style="margin-top: 36px;"><a href="{% url 'index' %}">回首页</a></li>
+                         <li id="goRank" class="btn btn-success" style="margin-top: 36px; "><a href="{% url 'rank' %}?test={{ userinfo.ginfo_game.game_name }}/">查看排行榜</a></li>
                     </div>
                 </div>
             </div>

@@ -39,8 +39,11 @@ urlpatterns = [
                   # 用户修改密码路由
                   path('modify_pwd/', ModifyPwdView.as_view(), name='modify_pwd'),
 
+                  # 首页信息
                   path('detail/<str>', class_detail, name='detail'),
+                  #
                   path('set/', include('competition.urls', namespace='set')),
+                  #
                   path('rank/', rank, name='rank'),
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

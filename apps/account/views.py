@@ -1,7 +1,9 @@
+import datetime
 import json
 import random
 import re
 
+import requests
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth.hashers import make_password
@@ -11,10 +13,12 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.generic.base import View
 
+from Exam.settings import APIKEY
+from apps.account.models import UserProfile, EmailVerifyRecord, VerifyCode
 from utils import weibo
 from utils.email_send import send_register_eamil
+from utils.yunpian import YunPian
 from .forms import RegisterForm, LoginForm, ForgetPwdForm, ModifyPwdForm
-from apps.account.models import UserProfile, EmailVerifyRecord, VerifyCode
 
 
 # 激活用户功能视图
@@ -87,9 +91,9 @@ class ForCodeView(View):
                     code = VerifyCode.objects.create(code=str(c), mobile=mobile)
                     code.save()
                     code = VerifyCode.objects.filter(code=str(c)).first()
-                    # yunpian = YunPian(APIKEY)
-                    # sms_status = yunpian.send_sms(code=code, mobile=mobile)
-                    reg = UserProfile.objects.create(mobile=mobile,password=(make_password(password)))
+                    yunpian = YunPian(APIKEY)
+                    sms_status = yunpian.send_sms(code=code, mobile=mobile)
+                    reg = UserProfile.objects.create(username=mobile,mobile=mobile, password=(make_password(password)))
                     reg.save()
                     msg = '发送成功，请查收!'
                     return HttpResponse(msg)
@@ -104,11 +108,12 @@ class ForCodeView(View):
             return HttpResponse(msg)
 
 
+# 实现多用户类型登录
 class CustomBackend(ModelBackend):
     def authenticate(self, request, username=None, password=None, **kwargs):
         try:
             # Q查询集获取数据，实现手机号/邮箱/username都可以登录
-            user = UserProfile.objects.get(Q(username=username) | Q(email=username))
+            user = UserProfile.objects.get(Q(username=username) | Q(email=username) | Q(mobile=username))
             # 符合条件，加密密码，不可以明文存入
             if user.check_password(password):
                 return user
@@ -212,15 +217,14 @@ class ResetView(View):
 def weibo_login(request):
     url = 'https://api.weibo.com/oauth2/' \
           'authorize?client_id=' + weibo.client_id + '&response_type=code&redirect_uri=' + weibo.redirect_uri
-    print(url)
     return redirect(url)
 
 
 # 微博登录后回调函数视图
 class Bindemail(View):
-    def get(self, request):
-        code = request.args.get('code')
-        token = request.post('https://api.weibo.com/oauth2/access_token?client_id=' + weibo.client_id + '&client_s'
+    def get(self,request):
+        code = request.GET.get('code')
+        token = requests.post('https://api.weibo.com/oauth2/access_token?client_id=' + weibo.client_id + '&client_s'
                                                                                                         'ecret=' + weibo.client_secret + '&grant_type=authorization_'
                                                                                                                                          'code&redirect_uri=' + weibo.redirect_uri + '&code=' + code)
         text = json.loads(token.text)
@@ -229,18 +233,17 @@ class Bindemail(View):
         access_token = text['access_token']
         uid = text['uid']
         url = 'https://api.weibo.com/2/users/show.json?access_token=' + access_token + '&uid=' + uid
-        info = json.loads(request.get(url).text)
-        username = info['idstr']
-        uid = info['id']
-        name = info['name']
-        user = UserProfile.objects.filter_by(username=username, uid=uid).all()
+        info2 = requests.get(url)
+        info = info2.text
+        info1 = json.loads(info)
+        uid = info1['id']
+        print(uid)
+        name = info1['name']
+        user = UserProfile.objects.filter(username=name).first()
         if user:
-            login(request, user[0])
+            login(request, user,backend='django.contrib.auth.backends.ModelBackend')
             return redirect('/')
-        user_obj = UserProfile()
-        user_obj.username = username
-        user_obj.nick_name = name
-        user_obj.uid = uid
-        user_obj.is_activate = True
-        user_obj.save()
-        return redirect('/index/')
+        a = UserProfile.objects.create(username=str(name),last_login=datetime.datetime.now(),is_active=True,password=make_password(uid))
+        login(request, user,backend='django.contrib.auth.backends.ModelBackend')
+        a.save()
+        return redirect('/')

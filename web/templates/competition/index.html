@@ -1,4 +1,4 @@
-{% extends '../base.html' %}
+{% extends 'base.html' %}
 {% block title %}比赛首页{% endblock %}
 {% block content %}
     <div class="main-content container">
@@ -26,7 +26,11 @@
                         </ul>
                     </div>
                     <div class="center-p">
-                        <a href="{% url 'set:test_start' game_info.id %}" class="btn btn-primary" >开始挑战</a>
+                        {% if exists %}
+                            <a class="btn btn-primary" style="color:red;font-weight: bold;background: white">您已参加过该考试</a>
+                        {% else %}
+                            <a href="{% url 'set:test_start' game_info.id %}" class="btn btn-primary" >开始挑战</a>
+                        {% endif %}
                         <a href="{% url 'rank' %}?test={{ game_info.game_name }}" class="btn btn-success" >查看排行榜</a>
                     </div>
                 </div>
