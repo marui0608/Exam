@@ -12,64 +12,68 @@
             <div class="xxdj-report border zycs_text" style="min-height: 1000px;">
                 <div class="course-report">
                     <h1 style="background: url(../static/images/course-h1.jpg) no-repeat center top;">{% if game %}"{{ game }}"排行榜{% else %}总排行榜{% endif %}</h1>
+                    {% if order %}
                         <div class="col-md-9">
-                             <div class="course-report">
-                                 {% if game %}
-                                     <table style="margin-top: 15px;" class="table table-hover">
-                                    <tr>
-                                        <th>排名</th>
-                                        <th>昵称</th>
-                                        <th>得分</th>
-                                        <th>用时</th>
-                                    </tr>
-                                    {% for r in order %}
-                                    <tr>
-                                        <td><b style="color:red">{{ forloop.counter }}</b></td>
-                                        <td>{{ r.ginfo_user.username }}</td>
-                                        <td>{{ r.total }}</td>
-                                        <td>{{ r.times|truncatechars:7 }}</td>
-                                    </tr>
-                                    {% endfor %}
-                                </table>
-                                 {% else %}
-                                     <table style="margin-top: 15px;" class="table table-hover">
-                                    <tr>
-                                        <th>排名</th>
-                                        <th>昵称</th>
-                                        <th>得分</th>
-                                        <th>用时</th>
-                                        <th>参与考试</th>
-                                    </tr>
-                                    {% for r in order %}
-                                    <tr>
-                                        <td><b style="color:red">{{ forloop.counter }}</b></td>
-                                        <td>{{ r.ginfo_user.username }}</td>
-                                        <td>{{ r.total }}</td>
-                                        <td>{{ r.times|truncatechars:7 }}</td>
-                                        <td>{{ r.ginfo_game.game_name }}</td>
-                                    </tr>
-                                    {% endfor %}
-                                </table>
-                                 {% endif %}
-                            </div>
+                         <div class="course-report">
+                             {% if game %}
+                                 <table style="margin-top: 15px;" class="table table-hover">
+                                <tr>
+                                    <th>排名</th>
+                                    <th>昵称</th>
+                                    <th>得分</th>
+                                    <th>用时</th>
+                                </tr>
+                                {% for r in order %}
+                                <tr>
+                                    <td><b style="color:red">{{ forloop.counter }}</b></td>
+                                    <td>{{ r.ginfo_user.username }}</td>
+                                    <td>{{ r.total }}</td>
+                                    <td>{{ r.times|truncatechars:7 }}</td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                             {% else %}
+                                 <table style="margin-top: 15px;" class="table table-hover">
+                                <tr>
+                                    <th>排名</th>
+                                    <th>昵称</th>
+                                    <th>得分</th>
+                                    <th>用时</th>
+                                    <th>参与考试</th>
+                                </tr>
+                                {% for r in order %}
+                                <tr>
+                                    <td><b style="color:red">{{ forloop.counter }}</b></td>
+                                    <td>{{ r.ginfo_user.username }}</td>
+                                    <td>{{ r.total }}</td>
+                                    <td>{{ r.times|truncatechars:7 }}</td>
+                                    <td>{{ r.ginfo_game.game_name }}</td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                             {% endif %}
                         </div>
+                    </div>
                         <div class="col-md-3" style="margin-top: 20px;padding-left: 20px;">
-                            <div class="panel panel-success">
-                                <div class="panel-heading panel-danger" style="text-align:center">您的历史最佳成绩</div>
-                                <div class="panel-body" id="myRank">
-                                    <div id="myResult">
-                                        <p>{{ good.ginfo_game.game_name }}
-                                            <span style="color: red;font-weight: bold">{{ good.total }}分</span>
-                                        </p>
-                                    </div>
-                                    <div style="padding: 10px 0">
-                                     <a class="btn btn-info" href="{% url 'index' %}">回首页</a>
-                                     <a class="btn btn-info" href="{% url 'index' %}" style="margin-left: 20px;">去答题</a>
-                                    </div>
+                        <div class="panel panel-success">
+                            <div class="panel-heading panel-danger" style="text-align:center">您的历史最佳成绩</div>
+                            <div class="panel-body" id="myRank">
+                                <div id="myResult">
+                                    <p>{{ good.0.ginfo_game.game_name }}
+                                        <span style="color: red;font-weight: bold">{{ good.0.total }}分</span>
+                                    </p>
                                 </div>
-                                <div class="panel-footer panel-success"></div>
+                                <div style="padding: 10px 0">
+                                 <a class="btn btn-info" href="{% url 'index' %}">回首页</a>
+                                 <a class="btn btn-info" href="{% url 'index' %}" style="margin-left: 20px;">去答题</a>
+                                </div>
                             </div>
+                            <div class="panel-footer panel-success"></div>
                         </div>
+                    </div>
+                    {% else %}
+                        <h1 style="margin: 0 auto">还没有考试哦，<a href="{% url 'set:set_test' %}" style="color: red">去配置考试</a></h1>
+                    {% endif %}
                 </div>
             </div>
         </div>

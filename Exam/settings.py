@@ -15,7 +15,7 @@ import sys
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0,BASE_DIR)
+sys.path.insert(0, BASE_DIR)
 sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 
 # Quick-start development settings - unsuitable for production
@@ -75,7 +75,7 @@ ROOT_URLCONF = 'Exam.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates'),os.path.join(BASE_DIR, 'web/templates')]
+        'DIRS': [os.path.join(BASE_DIR, 'templates'), os.path.join(BASE_DIR, 'web/templates')]
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -84,7 +84,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'django.template.context_processors.media',
                 # 第三方登陆
                 'social_django.context_processors.backends',
                 'social_django.context_processors.login_redirect',
@@ -103,8 +102,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'exam',
         'USER': 'root',
-        'PASSWORD': '123456',
-        'HOST': '47.93.127.78',
+        'PASSWORD': '542858zry',
+        'HOST': '39.98.192.225',
         'PORT': '3306',
     }
 }
@@ -150,15 +149,16 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 )
 
+STATIC_ROOT = os.path.join(BASE_DIR,'static1')
 
-# 默认图片
-MEDIA_URL = '/heads/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'web/heads')
+# # 默认图片
+# MEDIA_URL = '/heads/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'web/heads')
 
 
 # 上传文件
 BACKUP_URL = '/backup/'
-BACKUP_ROOT = os.path.join(BASE_DIR,'backup')
+BACKUP_ROOT = os.path.join(BASE_DIR, 'backup')
 
 EMAIL_HOST = "smtp.qq.com"  # SMTP服务器主机
 EMAIL_PORT = 25  # 端口

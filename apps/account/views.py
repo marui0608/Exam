@@ -39,8 +39,6 @@ class ActiveUserView(View):
             # 验证码不对的时候跳转到激活失败页面
             else:
                 return render(request, 'active_fail.html')
-            # 自己瞎输的验证码
-
         else:
             return render(request, "register.html", {"msg": "您的激活链接无效"})
 
@@ -93,7 +91,7 @@ class ForCodeView(View):
                     code = VerifyCode.objects.filter(code=str(c)).first()
                     yunpian = YunPian(APIKEY)
                     sms_status = yunpian.send_sms(code=code, mobile=mobile)
-                    reg = UserProfile.objects.create(username=mobile,mobile=mobile, password=(make_password(password)))
+                    reg = UserProfile.objects.create(username=mobile, mobile=mobile, password=(make_password(password)))
                     reg.save()
                     msg = '发送成功，请查收!'
                     return HttpResponse(msg)
@@ -222,11 +220,11 @@ def weibo_login(request):
 
 # 微博登录后回调函数视图
 class Bindemail(View):
-    def get(self,request):
+    def get(self, request):
         code = request.GET.get('code')
         token = requests.post('https://api.weibo.com/oauth2/access_token?client_id=' + weibo.client_id + '&client_s'
-                                                                                                        'ecret=' + weibo.client_secret + '&grant_type=authorization_'
-                                                                                                                                         'code&redirect_uri=' + weibo.redirect_uri + '&code=' + code)
+                                                                                                         'ecret=' + weibo.client_secret + '&grant_type=authorization_'
+                                                                                                                                          'code&redirect_uri=' + weibo.redirect_uri + '&code=' + code)
         text = json.loads(token.text)
         if token.status_code != 200:
             return redirect('/login/')
@@ -241,9 +239,10 @@ class Bindemail(View):
         name = info1['name']
         user = UserProfile.objects.filter(username=name).first()
         if user:
-            login(request, user,backend='django.contrib.auth.backends.ModelBackend')
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect('/')
-        a = UserProfile.objects.create(username=str(name),last_login=datetime.datetime.now(),is_active=True,password=make_password(uid))
-        login(request, user,backend='django.contrib.auth.backends.ModelBackend')
+        a = UserProfile.objects.create(username=str(name), last_login=datetime.datetime.now(), is_active=True,
+                                       password=make_password(uid))
+        login(request, user, backend='django.contrib.auth.backends.ModelBackend')
         a.save()
         return redirect('/')

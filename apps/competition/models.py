@@ -8,7 +8,7 @@ from apps.account.models import UserProfile
 # 考试分类
 class Classify(models.Model):
     class_name = models.CharField(u'类型名', max_length=10)
-    class_head = models.ImageField(u'类型头像', default='default_class.png')
+    class_head = models.ImageField(u'类型头像', upload_to='web/static/images')
     class_desc = models.TextField(u'类型描述')
 
     # meta信息，即后台栏目名

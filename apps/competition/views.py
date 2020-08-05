@@ -13,9 +13,7 @@ from .models import *
 # 首页
 def index(request):
     class_datas = Classify.objects.all()
-    if class_datas:
-        return render(request, 'web/index.html', {'class_datas': class_datas})
-    return render(request, 'err.html')
+    return render(request, 'web/index.html', {'class_datas': class_datas})
 
 
 # 考试分类详情
@@ -179,19 +177,22 @@ def set_test(request):
             endtime = request.POST.get('endtime')
             times = request.POST.get('times')
             ruleText = request.POST.get('ruleText', '')
-
+            name_exists = Game.objects.filter(game_name=name)
             if type and bank:
                 if name and num and score and starttime and endtime and times:
-                    if int(num) <= bank_info.bank_nums:
-                        g = Game(game_name=name, game_nums=num, game_score=score, create_time=starttime, end_time=endtime,
-                                 time_bar=times, game_rule=ruleText, class_game_id=Classify.objects.get(class_name=type).id,
-                                 bank_game_id=bank_info.id)
-                        g.save()
-                        bank_info.bank_bs += 1
-                        bank_info.save()
-                        return redirect('/detail/{}'.format(type))
+                    if not name_exists:
+                        if int(num) <= bank_info.bank_nums:
+                            g = Game(game_name=name, game_nums=num, game_score=score, create_time=starttime, end_time=endtime,
+                                     time_bar=times, game_rule=ruleText, class_game_id=Classify.objects.get(class_name=type).id,
+                                     bank_game_id=bank_info.id)
+                            g.save()
+                            bank_info.bank_bs += 1
+                            bank_info.save()
+                            return redirect('/detail/{}'.format(type))
+                        else:
+                            con = '数量超出所属题库的题数!'
                     else:
-                        con = '数量超出所属题库的题数!'
+                        con = '该考试名已存在!'
                 else:
                     con = '配置信息输入有误!'
             else:
@@ -295,6 +296,7 @@ def result(request, uid, gid):
     user = UserProfile.objects.get(id=uid)
     userinfo = GameInfo.objects.filter(ginfo_user_id=uid, ginfo_game_id=gid)[0]
     rank = GameInfo.objects.order_by('-total')
+    rank = GameInfo.objects.filter(ginfo_game_id=gid).order_by('-total')
     for i in rank:
         count += 1
         if request.user.is_authenticated:
@@ -315,7 +317,7 @@ def rank(request):
         else:
             game_deatil = Game.objects.get(game_name=game)
             order = GameInfo.objects.filter(ginfo_game_id=game_deatil.id).order_by('-total')
-        good = GameInfo.objects.filter(ginfo_user_id=request.user.id).order_by('-total')[0]
+        good = GameInfo.objects.filter(ginfo_user_id=request.user.id).order_by('-total')
         return render(request, 'competition/rank.html', {'game': game, 'order': order, 'good': good})
     else:
         return render(request, 'login.html')

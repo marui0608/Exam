@@ -66,10 +66,17 @@
         <div class="row" style="margin-top: 14px">
             <label>选择题库</label>
             <div>
-                <button class="xlsx1 btn btn-info dropdown-toggle">{% if bank %}{{ bank_info.bank_xlsx }}{% else %}选择题库{% endif %}</button>
-                {% for bank in bank_datas %}
-                    <a href="{% url 'set:set_test' %}?type={{ type_date }}&bank={{ bank.id }}" class="xlsx1 list-group-item btn btn-info" style="background-color: rgb(70, 184, 218);display: none">{{ bank.bank_xlsx }}</a>
-                {% endfor %}
+                <button id="btn01" class="btn btn-info dropdown-toggle">{% if bank %}{{ bank_info.bank_xlsx }}{% else %}选择题库{% endif %}</button>
+                <div id="pop_con" style="display: none;background: rgba(234,223,201,0.45);width: 250px;padding: 10px;border-radius: 10px">
+                    <span id="p01" style="font-size: 25px;margin-left: 210px;">×</span>
+                    {% if bank_datas %}
+                        {% for bank in bank_datas %}
+                            <a href="{% url 'set:set_test' %}?type={{ type_date }}&bank={{ bank.id }}" class="list-group-item btn btn-info" style="background-color: rgb(70, 184, 218)">{{ bank.bank_xlsx }}</a>
+                        {% endfor %}
+                    {% else %}
+                        <h3>还没有题库哦~，<a href="{% url 'set:set_bank' %}" style="color: red">去添加</a></h3>
+                    {% endif %}
+                </div>
                 {% if bank %}
                     <button class="xlsx2" style="background:#9acf6f">查看该题库信息</button>
                     <div class="xlsx2 xl" style="">
@@ -176,15 +183,22 @@
 
     <script>
     $(function () {
-        $('.xlsx1').on('click',function () {
-            $(this).next().toggle()
-        })
-    })
-    $(function () {
         $('.xlsx2').on('click',function () {
             $(this).next().toggle()
         })
     })
+
+    window.onload = function(){
+        let oBtn = document.getElementById("btn01"); //获取的按钮
+        let oDiv = document.getElementById("pop_con"); // 获取我们的背景和弹窗文字
+        let oP = document.getElementById("p01");
+        oBtn.onclick = function(){
+            oDiv.style.display = "block";
+        };
+        oP.onclick = function(){
+             oDiv.style.display = "none"
+        }
+    }
     </script>
 
 {% endblock %}

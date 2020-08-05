@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
 {% block title %}首页{% endblock %}
 {% block content %}
     <!--banner-->
@@ -40,7 +41,7 @@
                 <div class="col-md-3 cate">
                     <li class="layout-gray student" style="cursor: default;">
                         <a href="{% url 'detail' class_datas.0.class_name %}">
-                            <img src="{{ MEDIA_URL }}{{ class_datas.0.class_head }}" class="bc"
+                            <img src="{% static 'images/class1.jpg' %}" class="bc"
                                  style="width: 120px; height: 120px;border-radius: 50%; margin-top: 8px">
                             <p>{{ class_datas.0.class_desc }}</p>
                             <div class="button-div">
@@ -52,7 +53,7 @@
                 <div class="col-md-3 cate">
                     <li class="layout-red admin" style="cursor: default;">
                         <a href="{% url 'detail' class_datas.1.class_name %}">
-                            <img src="{{ MEDIA_URL }}{{ class_datas.1.class_head }}" class="bc"
+                            <img src="{% static 'images/class2.jpg' %}" class="bc"
                                  style="width: 120px; height: 120px;border-radius: 50%; margin-top: 8px">
                             <p>{{ class_datas.2.class_desc }}</p>
                             <div class="button-div">{{ class_datas.1.class_name }}</div>
@@ -62,7 +63,7 @@
                 <div class="col-md-3 cate">
                     <li class="layout-green teacher" style="cursor: default;">
                         <a href="{% url 'detail' class_datas.2.class_name %}">
-                            <img src="{{ MEDIA_URL }}{{ class_datas.2.class_head }}" class="bc"
+                            <img src="{% static 'images/class3.jpg' %}" class="bc"
                                  style="width: 120px; height: 120px;border-radius: 50%; margin-top: 8px">
                             <p>{{ class_datas.2.class_desc }}</p>
                             <div class="button-div">{{ class_datas.2.class_name }}</div>
@@ -72,7 +73,7 @@
                 <div class="col-md-3 cate">
                     <li class="layout-blue parent" style="margin-right: 26px;cursor: default;">
                         <a href="{% url 'detail' class_datas.3.class_name %}">
-                            <img src="{{ MEDIA_URL }}{{ class_datas.3.class_head }}" class="bc"
+                            <img src="{% static 'images/class4.jpg' %}" class="bc"
                                  style="width: 120px; height: 120px;border-radius: 50%; margin-top: 8px">
                             <p>{{ class_datas.3.class_desc }}</p>
                             <div class="button-div">{{ class_datas.3.class_name }}</div>
@@ -82,7 +83,7 @@
                 <div class="col-md-3 cate">
                     <li class="layout-red admin" style="margin-right: 0;cursor: default;">
                         <a href="{% url 'detail' class_datas.4.class_name %}">
-                            <img src="{{ MEDIA_URL }}{{ class_datas.4.class_head }}" class="bc"
+                            <img src="{% static 'images/class5.jpg' %}" class="bc"
                                  style="width: 120px;height: 120px; border-radius: 50%; margin-top: 8px">
                             <p>{{ class_datas.4.class_desc }}</p>
                             <div class="button-div">{{ class_datas.4.class_name }}</div>
@@ -92,7 +93,7 @@
                 <div class="col-md-3 cate">
                     <li class="layout-blue parent" style="margin-right: 26px;cursor: default;">
                         <a href="{% url 'detail' class_datas.5.class_name %}">
-                            <img src="{{ MEDIA_URL }}{{ class_datas.5.class_head }}" class="bc"
+                            <img src="{% static 'images/class6.jpg' %}" class="bc"
                                  style="width: 120px; height: 120px;border-radius: 50%; margin-top: 8px">
                             <p>{{ class_datas.5.class_desc }}</p>
                             <div class="button-div">{{ class_datas.5.class_name }}</div>
