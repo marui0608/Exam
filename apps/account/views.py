@@ -54,10 +54,12 @@ class RegisterView(View):
         register_form = RegisterForm(request.POST)
         if register_form.is_valid():
 
+            nick_name = request.POST.get('nick_name', None)
             user_name = request.POST.get('email', None)
             pass_word = request.POST.get('password', None)
             # 实例化一个user_profile对象
             user_profile = UserProfile()
+            user_profile.nick_name = nick_name
             user_profile.username = user_name
             user_profile.email = user_name
             user_profile.is_active = False

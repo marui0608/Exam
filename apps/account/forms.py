@@ -6,6 +6,7 @@ class RegisterForm(forms.Form):
     '''
     注册验证表单
     '''
+    nick_name = forms.CharField(required=True, min_length=1)
     email = forms.EmailField(required=True)
     password = forms.CharField(required=True, min_length=5)
     # 验证码

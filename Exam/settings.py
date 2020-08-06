@@ -32,8 +32,6 @@ ALLOWED_HOSTS = []
 # 重载AUTH_USER_MODEL
 AUTH_USER_MODEL = 'account.UserProfile'
 
-# 手机号码正则表达式
-REGEX_MOBILE = "^1[358]\d{9}$|^147\d{8}$|^176\d{8}$"
 # 云片网APIKEY
 APIKEY = "4e9a8211181ab7ab112c73aae072820c"
 # Application definition
@@ -64,7 +62,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',

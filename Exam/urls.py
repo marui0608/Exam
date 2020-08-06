@@ -1,5 +1,6 @@
 import xadmin
 from django.urls import path, include, re_path
+from django.views.decorators.csrf import csrf_exempt
 
 from account.views import RegisterView, ActiveUserView, ForCodeView, LoginView, ForgetPwdView, LogoutView, \
     ResetView, ModifyPwdView, weibo_login, Bindemail
@@ -18,7 +19,7 @@ urlpatterns = [
     # 邮件激活路由
     re_path('active/(?P<active_code>.*)/', ActiveUserView.as_view(), name='user_active'),
     # 手机号注册路由
-    path('forcode/', ForCodeView.as_view(), name='forcode'),
+    path('forcode/', csrf_exempt(ForCodeView.as_view()), name='forcode'),
     # 第三方登录
     path('social/', include('social_django.urls', namespace='social')),
     # 微博第三方登录路由
