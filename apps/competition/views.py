@@ -253,7 +253,7 @@ def test_start(request, id):
             my_time = endtime - starttime1[0]
             starttime1.clear()
             yes = 0
-            for i, data in zip(range(num), suiji_list[0]):
+            for i, data in zip(range(te), suiji_list[0]):
                 j = i + 1
                 name = request.POST.getlist('{}'.format(j),[])
                 if not name:
